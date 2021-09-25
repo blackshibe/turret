@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link href="sheet/login.css" rel="stylesheet" type="text/css" />
+		<link href="sheet/combined.css" rel="stylesheet" type="text/css" />
+
+		<title>Turret login</title>
+	</head>
+	<body>
+		<div class="page-bg"></div>
+		<script src="/scripts/login.js"></script>
+
+		<h1 style="padding-left: 20px">{{ weblink }}</h1>
+		<div class="shitty-center">
+			<main>
+				<fieldset>
+					<legend>Login</legend>
+					<div id="login_form" class="login-form">
+						<form>
+							<input
+								type="text"
+								maxlength="40"
+								placeholder="userid"
+								id="username_field"
+								name="username"
+							/>
+							<input
+								type="password"
+								maxlength="40"
+								placeholder="password"
+								id="password_field"
+								name="password"
+							/>
+						</form>
+
+						<!-- class = red tip -->
+						<span class="tip" id="login_tip"></span>
+						<button class="info-button" type="login_button" id="login_button">Login</button>
+					</div>
+				</fieldset>
+			</main>
+		</div>
+	</body>
+</html>
