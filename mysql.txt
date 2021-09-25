@@ -1,0 +1,5 @@
+Database turret
+    Table passwords
+        Field userid   number
+        Field username md5-string
+        Field password md5-string

@@ -1,0 +1,35 @@
+input {
+	padding: 10px;
+	margin-bottom: 10px;
+
+	color: white;
+	font-family: "Courier New", Courier, monospace;
+	background-color: rgb(10, 10, 10);
+	border: none;
+}
+
+.shitty-center {
+	position: fixed;
+	display: grid;
+	top: 0px;
+
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+	width: 100%;
+}
+
+.page-content {
+	display: grid;
+}
+
+.login-form {
+	display: grid;
+	align-items: center;
+	justify-self: center;
+}
+
+.tip {
+	padding: 10px;
+	padding-top: 5px;
+}
