@@ -159,9 +159,10 @@ app.listen(PORT, () => {
 	const ADMIN_PASSWORD = bcrypt.hashSync("1234", SALT);
 
 	mysql_connection.query(`SELECT * FROM accounts WHERE username = "${ADMIN_USERNAME}"`, (err, result) => {
+		if (err) throw err;
 		if (!result[0]) {
 			mysql_connection.query(
-				`INSERT INTO accounts(username, password, salt) VALUES("${ADMIN_USERNAME}", "${ADMIN_PASSWORD}", "${SALT}")`,
+				`INSERT INTO accounts(username, password) VALUES("${ADMIN_USERNAME}", "${ADMIN_PASSWORD}")`,
 				(err, result, fields) => {
 					console.log("admin account forcibly created with error:", err);
 				}

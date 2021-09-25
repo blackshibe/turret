@@ -4,9 +4,7 @@ Expressjs project built to track errors in production applications.
 
 # Configuration
 
-Installation:
-
-TO configure the MySQL database:
+Configure the MySQL database:
 
 ```
 CREATE DATABASE turret;
@@ -26,6 +24,8 @@ Desired result:
 | password | varchar(60) | NO   |     | NULL    |                |
 +----------+-------------+------+-----+---------+----------------+
 ```
+
+then, run:
 
 ```
 git clone https://github.com/blackshibe/turret
