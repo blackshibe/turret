@@ -25,7 +25,18 @@ Desired result:
 +----------+-------------+------+-----+---------+----------------+
 ```
 
-then, run:
+then, add an .ENV file:
+
+```
+DB_CONLIMIT=50
+DB_HOST=localhost
+DB_USER=blackshibe
+DB_PASSWORD=
+DB_DATABASE=passwords
+SECRET=somefuckingsecretidk
+```
+
+and run:
 
 ```
 git clone https://github.com/blackshibe/turret
