@@ -29,8 +29,9 @@ dotenv.config();
 const app = express();
 
 const mysql_connection = mysql.createConnection({
-	host: "localhost",
-	user: "blackshibe",
+	host: process.env.DB_HOST,
+	user: process.env.DB_USER,
+	password: process.env.DB_PASS,
 	database: "turret",
 });
 

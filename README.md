@@ -28,12 +28,13 @@ Desired result:
 then, add an .ENV file:
 
 ```
-DB_CONLIMIT=50
-DB_HOST=localhost
-DB_USER=blackshibe
-DB_PASSWORD=
-DB_DATABASE=passwords
-SECRET=somefuckingsecretidk
+DB_HOST=your host
+DB_USER=your user
+DB_PASS=your password
+SECRET=your secret
+
+ADMIN_USER=admin
+ADMIN_PASS=admin
 ```
 
 and run:
