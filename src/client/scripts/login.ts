@@ -32,7 +32,7 @@ window.addEventListener("load", () => {
 	};
 
 	let login_button = document.getElementById("login_button");
-
 	if (!login_button) throw "fuck";
+
 	login_button.addEventListener("click", login);
 });

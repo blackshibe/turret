@@ -6,7 +6,7 @@
 
 type SessionRequest = express.Request & {
 	session: Session & {
-		user: user;
+		user?: user;
 	};
 	sessionID: string;
 };
@@ -26,7 +26,11 @@ import express from "express";
 import bodyParser from "body-parser";
 import session, { Session } from "express-session";
 
-const parsed = dotenv.config();
+dotenv.config();
+if (!process.env.SECRET) throw "no env.SECRET";
+if (!process.env.DB_HOST) throw "no env.DB_HOST";
+if (!process.env.DB_USER) throw "no env.DB_USER";
+
 const app = express();
 const mysql_connection = mysql.createConnection({
 	host: process.env.DB_HOST,
@@ -57,7 +61,7 @@ const closure = (func: (req: SessionRequest, res: express.Response, next: (...ar
 };
 
 const force_signed_in = (req: SessionRequest, res: express.Response, next: (...args: any[]) => void) => {
-	if (req.session?.user) {
+	if (req.session.user) {
 		next();
 	} else {
 		// redirect to login page
@@ -199,13 +203,13 @@ app.post(
 			return finish(401, { err: "Invalid token" });
 		}
 
-		let reply = [];
+		type bodyElement = { [index: string]: any };
+		let reply: bodyElement[] = [];
 		mysql_connection.query(`SELECT * FROM issues;`, async (err, result) => {
 			if (err) return finish(500, { code: err.code, err: err.message });
 
 			for (let row in result) {
-				console.log("processing", row);
-				let body = { events: {} };
+				let body: bodyElement = { events: {} };
 				for (let col in result[row]) body[col] = result[row][col];
 
 				reply.push(body);
@@ -214,10 +218,9 @@ app.post(
 			mysql_connection.query(`SELECT * FROM events;`, (err, result) => {
 				if (err) return finish(500, { code: err.code, err: err.message });
 				for (let row in result) {
-					console.log(reply, row);
-					let body = {};
-
+					let body: bodyElement = {};
 					for (let col in result[row]) body[col] = result[row][col];
+
 					reply.forEach((element) => {
 						if (element.issueid === result[row].issueid) element.events[row] = body;
 					});
@@ -285,15 +288,19 @@ app.get(
 	})
 );
 
-app.use(
+app.get(
 	"/",
 	cl_signin,
 	closure((req, res) => {
 		console.log("GET /");
 
-		res.render("index", { username: req.session.user.username, version: package_file.version });
+		res.render("index", { username: req.session.user!.username, version: package_file.version });
 	})
 );
+
+app.use(function (req, res) {
+	res.send(404);
+});
 
 // entry
 
@@ -303,8 +310,8 @@ app.listen(PORT, () => {
 	console.log(`if local, available under http://localhost:${PORT}`);
 
 	const SALT = bcrypt.genSaltSync(10);
-	const ADMIN_USERNAME = "blackshibe";
-	const ADMIN_PASSWORD = bcrypt.hashSync("1234", SALT);
+	const ADMIN_USERNAME = process.env.ADMIN_USER;
+	const ADMIN_PASSWORD = bcrypt.hashSync(process.env.ADMIN_PASS, SALT);
 
 	mysql_connection.query(`SELECT * FROM accounts WHERE username = "${ADMIN_USERNAME}"`, (err, result) => {
 		if (err) throw err;

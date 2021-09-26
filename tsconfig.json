@@ -3,9 +3,18 @@
 		"jsx": "react",
 		"target": "es6",
 		"module": "commonjs",
-		"outDir": "dist/",
+		"outDir": "./dist",
+		"rootDir": "./src",
 		"sourceMap": true,
-		"esModuleInterop": true
+		"esModuleInterop": true,
+		"lib": ["dom", "dom.iterable", "esnext"],
+		"skipLibCheck": true,
+		"allowSyntheticDefaultImports": true,
+		"strict": true,
+		"forceConsistentCasingInFileNames": true,
+		"noFallthroughCasesInSwitch": true,
+		"moduleResolution": "node",
+		"resolveJsonModule": true
 	},
-	"include": ["src/**/*.ts", "src/client/scripts/index.tsx"]
+	"include": ["src/server/index.ts", "src/client/scripts/index.tsx"]
 }

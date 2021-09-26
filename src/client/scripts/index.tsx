@@ -1,14 +1,10 @@
-import React from "react";
-import ReactDOM from "react-dom";
-
 window.addEventListener("load", () => {
 	let logout_button = document.getElementById("logout");
 	let test_button = document.getElementById("test");
 	let output = document.getElementById("page_content");
 
-	if (!output) throw "fuck";
-	if (!logout_button) throw "fuck";
-	if (!test_button) throw "fuck";
+	if (logout_button === null) throw "fuck";
+	if (test_button === null) throw "fuck";
 
 	const leave = () => {
 		fetch("../api/web/logout", {
@@ -48,10 +44,10 @@ window.addEventListener("load", () => {
 		// });
 	};
 
-	const render_container = (props: { [index: string]: any }) => {
+	const issue = (props: { issueid: number; content: string; events: any[]; time: string }) => {
 		let server_error = true;
 		let unique_accounts = 0;
-		let unique_account_list = [];
+		let unique_account_list: string[] = [];
 		let occured = 0;
 
 		for (const index in props.events) {
@@ -59,25 +55,22 @@ window.addEventListener("load", () => {
 
 			occured += 1;
 			if (!unique_account_list.includes(element.userid)) {
-				if (element.userid !== 0) {
-					server_error = false;
-				}
-
+				if (element.userid !== 0) server_error = false;
 				unique_accounts += 1;
 				unique_account_list.push(element.userid);
 			}
 		}
 
 		const render_content = () => {
-			let ret = [];
-			props.content.split("\n").forEach((line, index) => {
+			let ret: React.ReactElement[] = [];
+			props.content.split("\n").forEach((line: string, index: number) => {
 				if (index === 0) ret.push(<span>{line}</span>);
 				else ret.push(<span className="info">{line}</span>);
 			});
 			return ret;
 		};
 
-		const delete_container = () => {
+		const delete_issue = () => {
 			fetch("../api/proj/issues/delete", {
 				method: "POST",
 				headers: {
@@ -86,16 +79,18 @@ window.addEventListener("load", () => {
 				},
 				body: JSON.stringify({ auth: "LOGTOKEN", issueid: props.issueid }),
 			}).then(async (res) => {
-				window.location.reload();
+				let response = await res.json();
+				console.log(response);
+				if (response.ok) reload_view();
 			});
 		};
 
 		return (
-			<fieldset className="info-container">
+			<fieldset key={props.issueid} className="info-container">
 				<legend className="info-header">
 					<span className="error-id hbold">#{props.issueid}</span> -{" "}
 					<span className="info hbold">{occured}</span> times on{" "}
-					{server_error ? "the server" : <span className="info hbold">{unique_accounts}</span> + "accounts"}
+					<span className="info hbold">{server_error ? "the server" : unique_accounts + " accounts"}</span>
 				</legend>
 
 				<div className="info-code">{...[...render_content()]}</div>
@@ -114,7 +109,7 @@ window.addEventListener("load", () => {
 				<div className="halfbreak"></div>
 
 				<nav className="info-actions">
-					<button id="">delete</button>
+					<button onClick={delete_issue}>delete</button>
 					<div className="space" />
 					<button>get eventlist</button>
 					<div className="space" />
@@ -124,26 +119,31 @@ window.addEventListener("load", () => {
 		);
 	};
 
-	const arse = {
-		"grid-column": "1/4",
-	};
-	output.appendChild(render(<div className="loading-bar">loading...</div>));
+	ReactDOM.render(<div className="info-container loading-bar">loading...</div>, output);
 
-	fetch("../api/proj/issues/get", {
-		method: "POST",
-		headers: {
-			Accept: "application/json",
-			"Content-Type": "application/json",
-		},
-		body: JSON.stringify({ auth: "LOGTOKEN" }),
-	}).then(async (res) => {
-		let response = await res.json();
+	const reload_view = () => {
+		fetch("../api/proj/issues/get", {
+			method: "POST",
+			headers: {
+				Accept: "application/json",
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({ auth: "LOGTOKEN" }),
+		}).then(async (res) => {
+			if (output === null) throw "fuck";
+			let response = await res.json();
 
-		output.innerHTML = "";
-		response.forEach((element) => {
-			ReactDOM.render(render_container({}), output);
+			// output.innerHTML = "";
+			let list: JSX.Element[] = [];
+			response.forEach((element: any) => {
+				list.push(issue(element));
+			});
+
+			ReactDOM.render(list, output);
 		});
-	});
+	};
+
+	reload_view();
 
 	logout_button.addEventListener("click", leave);
 	test_button.addEventListener("click", test);
