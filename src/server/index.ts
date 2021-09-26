@@ -309,14 +309,17 @@ app.listen(PORT, () => {
 	console.log(`running from ${__dirname}`);
 	console.log(`if local, available under http://localhost:${PORT}`);
 
-	const SALT = bcrypt.genSaltSync(10);
-	const ADMIN_USERNAME = process.env.ADMIN_USER;
-	const ADMIN_PASSWORD = bcrypt.hashSync(process.env.ADMIN_PASS, SALT);
-
-	mysql_connection.query(`SELECT * FROM accounts WHERE username = "${ADMIN_USERNAME}"`, (err, result) => {
+	mysql_connection.query(`SELECT * FROM accounts WHERE username = "${process.env.ADMIN_USERNAME}"`, (err, result) => {
 		if (err) throw err;
 
 		if (!result[0]) {
+			if (!process.env.ADMIN_USER) throw "no process.env.ADMIN_USER";
+			if (!process.env.ADMIN_PASS) throw "no process.env.ADMIN_PASS";
+
+			const SALT = bcrypt.genSaltSync(10);
+			const ADMIN_USERNAME = process.env.ADMIN_USER;
+			const ADMIN_PASSWORD = bcrypt.hashSync(process.env.ADMIN_PASS, SALT);
+
 			mysql_connection.query(
 				`INSERT INTO accounts(username, password) VALUES("${ADMIN_USERNAME}", "${ADMIN_PASSWORD}")`,
 				(err, result, fields) => {

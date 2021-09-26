@@ -25,7 +25,11 @@ window.addEventListener("load", () => {
 				Accept: "application/json",
 				"Content-Type": "application/json",
 			},
-			body: JSON.stringify({ userid: "123", content: "test error 67" + Math.random(), auth: "LOGTOKEN" }),
+			body: JSON.stringify({
+				userid: "123",
+				content: "test error 67\nStack Begin\nYeah\nStack end" + Math.random(),
+				auth: "LOGTOKEN",
+			}),
 		}).then(async (res) => {
 			alert(JSON.stringify(res.text()));
 
@@ -66,8 +70,17 @@ window.addEventListener("load", () => {
 			props.content.split("\n").forEach((line: string, index: number) => {
 				if (index === 0) ret.push(<span>{line}</span>);
 				else ret.push(<span className="info">{line}</span>);
+				ret.push(<br />);
 			});
 			return ret;
+		};
+
+		const render_side = () => {
+			if (server_error) {
+				return <span className="hbold">the server</span>;
+			} else {
+				return <span className="info hbold">{unique_accounts + " accounts"}</span>;
+			}
 		};
 
 		const delete_issue = () => {
@@ -89,11 +102,10 @@ window.addEventListener("load", () => {
 			<fieldset key={props.issueid} className="info-container">
 				<legend className="info-header">
 					<span className="error-id hbold">#{props.issueid}</span> -{" "}
-					<span className="info hbold">{occured}</span> times on{" "}
-					<span className="info hbold">{server_error ? "the server" : unique_accounts + " accounts"}</span>
+					<span className="info hbold">{occured}</span> times on {render_side()}
 				</legend>
 
-				<div className="info-code">{...[...render_content()]}</div>
+				<div className="info-code">{...render_content()}</div>
 				<div className="halfbreak"></div>
 
 				{/* <div class="info-code">
