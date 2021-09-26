@@ -1,6 +1,6 @@
 {
 	"name": "express-playground",
-	"version": "0.0.0",
+	"version": "0.0.1",
 	"private": true,
 	"scripts": {
 		"debug": "bash run.sh",
@@ -18,12 +18,10 @@
 		"express": "~4.16.1",
 		"express-session": "^1.17.2",
 		"http-errors": "~1.6.3",
-		"jade": "^0.31.2",
 		"morgan": "~1.9.1",
 		"mysql": "^2.18.1",
 		"nodemon": "^2.0.13",
 		"sprightly": "^1.0.3",
-		"tsc": "^2.0.3",
 		"typescript": "^4.4.3"
 	},
 	"devDependencies": {

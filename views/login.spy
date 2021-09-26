@@ -13,9 +13,12 @@
 		<div class="page-bg"></div>
 		<script src="/scripts/login.js"></script>
 
-		<h1 style="padding-left: 20px">{{ weblink }}</h1>
+		<main>
+			<h1 style="padding-left: 20px">{{ weblink }}</h1>
+		</main>
+
 		<div class="shitty-center">
-			<main>
+			<nav>
 				<fieldset>
 					<legend>Login</legend>
 					<div id="login_form" class="login-form">
@@ -41,7 +44,11 @@
 						<button class="info-button" type="login_button" id="login_button">Login</button>
 					</div>
 				</fieldset>
-			</main>
+			</nav>
 		</div>
+		<footer style="position: fixed">
+			Turret {{ version }} -
+			<a href="https://github.com/blackshibe/turret">https://github.com/blackshibe/turret</a>
+		</footer>
 	</body>
 </html>

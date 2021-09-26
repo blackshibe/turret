@@ -1,0 +1,23 @@
+main {
+	margin: 12px;
+}
+
+footer {
+	position: unset !important;
+	width: unset !important;
+}
+
+.page-content {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(min(600px, 100%), 1fr));
+}
+
+.page-content-wide {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(min(800px, 100%), 1fr));
+}
+
+.info-header {
+	padding-left: 10px;
+	padding-right: 10px;
+}

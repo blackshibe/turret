@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link href="sheet/list.css" rel="stylesheet" type="text/css" />
+		<link href="sheet/combined.css" rel="stylesheet" type="text/css" />
+
+		<title>Turret list</title>
+	</head>
+	<body>
+		<div class="page-bg"></div>
+		<script src="/scripts/list.js"></script>
+		<main>
+			<h1 style="padding-left: 20px">{{ weblink }}</h1>
+
+			<!-- remove -->
+			<br />
+			<hr width="100%" />
+			<br />
+			<fieldset class="info-container">
+				<code>
+					possible formats: <br />
+					1. localhost:8000/list/ - show all <br />
+					2. localhost:8000/list/issue/ - show all issues<br />
+					3. localhost:8000/list/issue/ISSUEID - show all events for ISSUEID <br />
+					4. localhost:8000/list/event/ - show all events<br />
+				</code>
+			</fieldset>
+
+			<!-- remove -->
+			<br />
+			<hr width="100%" />
+			<br />
+
+			<h1 style="padding-left: 20px">version 1: All</h1>
+
+			<h2 style="padding-left: 20px">Issues</h2>
+			<nav class="page-content">
+				<fieldset class="info-container">
+					<legend class="info-header">
+						<span class="error-id hbold">#12</span> -
+						<span class="info hbold">12:30 12nd Sept 2021</span> caused by
+						<span class="info hbold">128321838</span>
+					</legend>
+
+					<code>
+						<span>Ass is not a valid member of Folder 'Workspace.MosinNagant.attachments"</span><br />
+						<span>Metadata from config.ts can be displayed here</span><br />
+					</code>
+				</fieldset>
+				<fieldset class="info-container">
+					<legend class="info-header">
+						<span class="error-id hbold">#12</span> -
+						<span class="info hbold">12:30 12nd Sept 2021</span> caused by
+						<span class="info hbold">128321838</span>
+					</legend>
+
+					<code>
+						<span>Ass is not a valid member of Folder 'Workspace.MosinNagant.attachments"</span><br />
+						<span>Metadata from config.ts can be displayed here</span><br />
+					</code>
+				</fieldset>
+				<fieldset class="info-container">
+					<legend class="info-header">
+						<span class="error-id hbold">#12</span> -
+						<span class="info hbold">12:30 12nd Sept 2021</span> caused by
+						<span class="info hbold">128321838</span>
+					</legend>
+
+					<code>
+						<span>Ass is not a valid member of Folder 'Workspace.MosinNagant.attachments"</span><br />
+						<span>Metadata from config.ts can be displayed here</span><br />
+					</code>
+				</fieldset>
+			</nav>
+
+			<h2 style="padding-left: 20px">Events</h2>
+			<nav class="page-content-wide">
+				<fieldset class="info-container">
+					<legend class="info-header">
+						<span class="event-id hbold">$12</span> from issue <span class="error-id hbold">#123</span> -
+						<span class="info hbold">12:30 12nd Sept 2021</span> caused by
+						<span class="info hbold">128321838</span>
+					</legend>
+
+					<code> <span>Metadata from config.ts can be displayed here</span><br /> </code>
+				</fieldset>
+				<fieldset class="info-container">
+					<legend class="info-header">
+						<span class="event-id hbold">$12</span> from issue <span class="error-id hbold">#123</span> -
+						<span class="info hbold">12:30 12nd Sept 2021</span> caused by
+						<span class="info hbold">128321838</span>
+					</legend>
+
+					<code> <span>Metadata from config.ts can be displayed here</span><br /> </code>
+				</fieldset>
+				<fieldset class="info-container">
+					<legend class="info-header">
+						<span class="event-id hbold">$12</span> from issue <span class="error-id hbold">#123</span> -
+						<span class="info hbold">12:30 12nd Sept 2021</span> caused by
+						<span class="info hbold">128321838</span>
+					</legend>
+
+					<code> <span>Metadata from config.ts can be displayed here</span><br /> </code>
+				</fieldset>
+				<fieldset class="info-container">
+					<legend class="info-header">
+						<span class="event-id hbold">$12</span> from issue <span class="error-id hbold">#123</span> -
+						<span class="info hbold">12:30 12nd Sept 2021</span> caused by
+						<span class="info hbold">128321838</span>
+					</legend>
+
+					<code> <span>Metadata from config.ts can be displayed here</span><br /> </code>
+				</fieldset>
+			</nav>
+
+			<br />
+			<br />
+
+			<h1 style="padding-left: 20px">version 2: Just issues</h1>
+			<nav class="page-content">
+				<fieldset class="info-container">
+					<legend class="info-header">
+						<span class="error-id hbold">#12</span> -
+						<span class="info hbold">12:30 12nd Sept 2021</span> caused by
+						<span class="info hbold">128321838</span>
+					</legend>
+
+					<code>
+						<span>Ass is not a valid member of Folder 'Workspace.MosinNagant.attachments"</span><br />
+						<span>Metadata from config.ts can be displayed here</span><br />
+					</code>
+				</fieldset>
+			</nav>
+
+			<br />
+			<br />
+			<h1 style="padding-left: 20px">version 3: Just events</h1>
+			<nav class="page-content-wide">
+				<fieldset class="info-container">
+					<legend class="info-header">
+						<span class="event-id hbold">$12</span> from issue <span class="error-id hbold">#123</span> -
+						<span class="info hbold">12:30 12nd Sept 2021</span> caused by
+						<span class="info hbold">128321838</span>
+					</legend>
+
+					<code> <span>Metadata from config.ts can be displayed here</span><br /> </code>
+				</fieldset>
+				<fieldset class="info-container">
+					<legend class="info-header">
+						<span class="event-id hbold">$12</span> from issue <span class="error-id hbold">#123</span> -
+						<span class="info hbold">12:30 12nd Sept 2021</span> caused by
+						<span class="info hbold">128321838</span>
+					</legend>
+
+					<code> <span>Metadata from config.ts can be displayed here</span><br /> </code>
+				</fieldset>
+				<fieldset class="info-container">
+					<legend class="info-header">
+						<span class="event-id hbold">$12</span> from issue <span class="error-id hbold">#123</span> -
+						<span class="info hbold">12:30 12nd Sept 2021</span> caused by
+						<span class="info hbold">128321838</span>
+					</legend>
+
+					<code> <span>Metadata from config.ts can be displayed here</span><br /> </code>
+				</fieldset>
+				<fieldset class="info-container">
+					<legend class="info-header">
+						<span class="event-id hbold">$12</span> from issue <span class="error-id hbold">#123</span> -
+						<span class="info hbold">12:30 12nd Sept 2021</span> caused by
+						<span class="info hbold">128321838</span>
+					</legend>
+
+					<code> <span>Metadata from config.ts can be displayed here</span><br /> </code>
+				</fieldset>
+			</nav>
+
+			<br />
+			<br />
+			<h1 style="padding-left: 20px">version 4: Filtered events</h1>
+			<br />
+
+			<h2 style="padding-left: 20px">Events for <span class="event-id hbold">#1234</span></h2>
+
+			<nav class="page-content-wide">
+				<fieldset class="info-container">
+					<legend class="info-header">
+						<span class="event-id hbold">$12</span> -
+						<span class="info hbold">12:30 12nd Sept 2021</span> caused by
+						<span class="info hbold">128321838</span>
+					</legend>
+
+					<code> <span>Metadata from config.ts can be displayed here</span><br /> </code>
+				</fieldset>
+			</nav>
+		</main>
+	</body>
+</html>

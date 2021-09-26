@@ -45,3 +45,5 @@ cd turret
 npm install
 npm run debug
 ```
+
+.spy is a file extension specifically to allow expressjs to render via the `render` function. use HTML highlighting.

@@ -15,34 +15,46 @@
 
 		<header>
 			<h1>Welcome, {{ username }}</h1>
+			running {{ version }}
 			<button id="logout">logout</button>
 		</header>
 
 		<nav class="page-content">
 			<fieldset class="info-container">
 				<legend class="info-header">
-					<span class="highlight hbold">#2139</span> - <span class="blue hbold">64</span> times through
-					<span class="blue hbold">7</span>
-					days on <span class="blue hbold">4</span> accounts
+					<span class="error-id hbold">#2139</span> - <span class="info hbold">64</span> times on
+					<span class="info hbold">4</span> accounts
 				</legend>
 
 				<div class="info-code">
 					<code>
-						Ass is not a valid member of Folder 'Workspace.MosinNagant.attachments"<br />
-						<span class="blue">Stack Begin </span><br />
-						<span class="blue"
+						<span>Ass is not a valid member of Folder 'Workspace.MosinNagant.attachments"</span><br />
+						<span class="info">Stack Begin </span><br />
+						<span class="info"
 							>Script 'Workspace.MosinNagant.attachments.pu_3.5x_scope.runtimeProperties', Line 18</span
 						><br />
-						<span class="blue">Stack End</span><br />
+						<span class="info">Stack End</span><br />
+					</code>
+				</div>
+
+				<div class="halfbreak"></div>
+
+				<div class="info-code">
+					<code>
+						Graph view n shit
+						<br />
+						<br />
+						<br />
+						<br />
 					</code>
 				</div>
 
 				<div class="halfbreak"></div>
 
 				<nav class="info-actions">
-					<button>mark as solved</button>
-					<button>ignore</button>
-					<button>flag user(s)</button>
+					<button>delete</button>
+					<button>get eventlist</button>
+					<button>toggle graph</button>
 				</nav>
 			</fieldset>
 		</nav>

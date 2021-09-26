@@ -1,3 +1,6 @@
+// todo: foldable issues/events in list
+// todo: clean the css
+
 // https://expressjs.com/en/resources/middleware/session.html#compatible-session-stores
 // https://stackoverflow.com/questions/52580754/nodejs-how-to-securely-store-ip-username-and-password-of-a-database#52586124
 
@@ -14,6 +17,7 @@ type user = {
 };
 
 const sprightly = require("sprightly");
+const package_file = require("../../package.json");
 
 import mysql from "mysql";
 import bcrypt from "bcrypt";
@@ -62,7 +66,7 @@ const force_signed_in = (req: SessionRequest, res: express.Response, next: (...a
 	}
 };
 
-const force_unsigned_in = (req: SessionRequest, res: express.Response, next: (...args: any[]) => void) => {
+const cl_unsignedin = (req: SessionRequest, res: express.Response, next: (...args: any[]) => void) => {
 	if (req.session?.user) {
 		// redirect to main page
 		res.redirect("/");
@@ -120,26 +124,48 @@ app.post(
 	})
 );
 
-// project api=
+// project api
 
-// todo
+app.post(
+	"/api/proj/issue",
+	json_parser,
+	closure((req, res) => {
+		console.log("POST API issue");
+	})
+);
 
 // website
 
-app.use("/login", force_unsigned_in, (req, res) => {
-	console.log("traffic to /logon");
+app.get(
+	"/login",
+	cl_unsignedin,
+	closure((req, res) => {
+		console.log("GET /login");
 
-	// https://stackoverflow.com/questions/10183291/how-to-get-the-full-url-in-express#10185427
-	let full_url = req.protocol + "://" + req.get("host") + req.baseUrl;
-	res.render("login", { weblink: full_url, pgtitle: "Turret login" });
-});
+		// https://stackoverflow.com/questions/10183291/how-to-get-the-full-url-in-express#10185427
+		let full_url = req.protocol + "://" + req.get("host") + req.baseUrl;
+		res.render("login", { weblink: full_url });
+	})
+);
 
 app.get(
+	"/list",
+	cl_signin,
+	closure((req, res) => {
+		console.log("GET /list");
+
+		let full_url = req.protocol + "://" + req.get("host") + req.baseUrl;
+		res.render("list", { weblink: full_url });
+	})
+);
+
+app.use(
 	"/",
 	cl_signin,
 	closure((req, res) => {
-		console.log("traffic to /");
-		res.render("index", { username: req.session.user.username });
+		console.log("GET /");
+
+		res.render("index", { username: req.session.user.username, version: package_file.version });
 	})
 );
 
@@ -148,8 +174,7 @@ app.get(
 const PORT = 8000;
 app.listen(PORT, () => {
 	console.log(`running from ${__dirname}`);
-	console.log(`available under http://localhost:${PORT}`);
-	console.log(`.env state error: ${parsed.error}`);
+	console.log(`if local, available under http://localhost:${PORT}`);
 
 	const SALT = bcrypt.genSaltSync(10);
 	const ADMIN_USERNAME = "blackshibe";
@@ -168,14 +193,4 @@ app.listen(PORT, () => {
 			console.log("admin account already exists");
 		}
 	});
-
-	// mysql_connection.query("SELECT * FROM accounts;", (err, result, fields) => {
-	// 	if (err) throw err;
-	// 	for (var row in result) {
-	// 		console.log(row);
-	// 		for (const col in result[row]) {
-	// 			console.log(col, result[row][col]);
-	// 		}
-	// 	}
-	// });
 });

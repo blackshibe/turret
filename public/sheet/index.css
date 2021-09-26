@@ -1,54 +1,18 @@
 header {
 	margin: 10px;
 	padding: 15px;
-	box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.253);
+	box-shadow: 0px 0px 15px var(--shadow);
 
 	margin-bottom: 10px;
 
 	border-width: 1px;
-	border-color: rgba(255, 255, 255, 0.24);
+	border-color: var(--border);
 	border-style: solid;
-}
-
-h1 {
-	margin: 0px;
-	margin-bottom: 10px;
-	margin-top: 5px;
-}
-
-.halfbreak {
-	height: 10px;
 }
 
 .page-content {
 	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(600px, 1fr));
-}
-
-.info-container {
-	border-radius: 2px;
-	padding: 10px;
-	box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.253);
-	margin: 10px;
-	height: min-content;
-
-	border-width: 1px;
-	border-color: rgba(255, 255, 255, 0.219);
-	border-style: solid;
-}
-
-.info-code {
-	border-radius: 3px;
-	padding: 5px;
-	background-color: rgb(20, 20, 20);
-}
-
-.hbold {
-	font-weight: bolder;
-	padding: 2px;
-	border-width: 1px;
-	border-color: rgba(255, 255, 255, 0.219);
-	border-style: dashed;
+	grid-template-columns: repeat(auto-fill, minmax(min(600px, 100%), 1fr));
 }
 
 .info-header {
