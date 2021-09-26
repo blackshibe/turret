@@ -1,10 +1,10 @@
 window.addEventListener("load", () => {
 	let logout_button = document.getElementById("logout");
-	let test_button = document.getElementById("test");
+	let all_button = document.getElementById("all");
 	let output = document.getElementById("page_content");
 
 	if (logout_button === null) throw "fuck";
-	if (test_button === null) throw "fuck";
+	if (all_button === null) throw "fuck";
 
 	const leave = () => {
 		fetch("../api/web/logout", {
@@ -18,34 +18,8 @@ window.addEventListener("load", () => {
 		});
 	};
 
-	const test = () => {
-		fetch("../api/proj/output", {
-			method: "POST",
-			headers: {
-				Accept: "application/json",
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({
-				userid: "123",
-				content: "test error 67\nStack Begin\nYeah\nStack end" + Math.random(),
-				auth: "LOGTOKEN",
-			}),
-		}).then(async (res) => {
-			alert(JSON.stringify(res.text()));
-
-			// window.location.href = window.location.origin + "/login";
-		});
-
-		// fetch("../api/proj/issues/delete", {
-		// 	method: "POST",
-		// 	headers: {
-		// 		Accept: "application/json",
-		// 		"Content-Type": "application/json",
-		// 	},
-		// 	body: JSON.stringify({ issueid: 8, auth: "LOGTOKEN" }),
-		// }).then(async (res) => {
-		// 	window.location.href = window.location.origin + "/";
-		// });
+	const all = () => {
+		window.location.href = window.location.origin + "/list";
 	};
 
 	const issue = (props: { issueid: string; content: string; events: any[]; time: string }) => {
@@ -84,6 +58,10 @@ window.addEventListener("load", () => {
 			}
 		};
 
+		const show_list = () => {
+			window.location.href = `/list/issue/${props.issueid}`;
+		};
+
 		let first = true;
 		const toggle_chart = () => {
 			// dont ask me
@@ -94,13 +72,9 @@ window.addEventListener("load", () => {
 			}
 
 			if (chart) {
-				document.getElementById("halfbreak:" + props.issueid)?.setAttribute("style", "height: 0px !important");
-
 				chart.destroy();
 				chart = undefined;
 			} else {
-				document.getElementById("halfbreak:" + props.issueid)?.setAttribute("style", "height: 10px !important");
-
 				// Chart.options is pretty retarded
 				let properties: { type: string; data: { labels: string[]; datasets: any } } = {
 					type: "line",
@@ -168,12 +142,12 @@ window.addEventListener("load", () => {
 				<div className="info-canvas-holder">
 					<canvas className="info-canvas" id={"canvas:" + props.issueid}></canvas>
 				</div>
-				<div className="halfbreak" style={{ height: "0px !important" }}></div>
+				<div className="halfbreak"></div>
 
 				<nav className="info-actions">
 					<button onClick={delete_issue}>delete</button>
 					<div className="space" />
-					<button>get eventlist</button>
+					<button onClick={show_list}>get eventlist</button>
 					<div className="space" />
 					<button onClick={toggle_chart}>toggle graph</button>
 				</nav>
@@ -213,5 +187,5 @@ window.addEventListener("load", () => {
 	reload_view();
 
 	logout_button.addEventListener("click", leave);
-	test_button.addEventListener("click", test);
+	all_button.addEventListener("click", all);
 });

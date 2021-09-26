@@ -21,10 +21,6 @@ header {
 	grid-template-columns: repeat(auto-fill, minmax(min(600px, 100%), 1fr));
 }
 
-.loading-bar {
-	grid-column: 1/4;
-}
-
 .info-canvas {
 	height: 0px;
 	transition: all 0.2s cubic-bezier(0.46, 0.03, 0.52, 0.96) 0s;

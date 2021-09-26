@@ -16,5 +16,5 @@
 		"moduleResolution": "node",
 		"resolveJsonModule": true
 	},
-	"include": ["src/server/index.ts", "src/client/scripts/index.tsx"]
+	"include": ["src/server/index.ts", "src/client/scripts/**.tsx"]
 }

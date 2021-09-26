@@ -1,6 +1,3 @@
-// todo: foldable issues/events in list
-// todo: clean the css
-
 // https://expressjs.com/en/resources/middleware/session.html#compatible-session-stores
 // https://stackoverflow.com/questions/52580754/nodejs-how-to-securely-store-ip-username-and-password-of-a-database#52586124
 
@@ -70,6 +67,17 @@ const force_signed_in = (req: SessionRequest, res: express.Response, next: (...a
 	}
 };
 
+const force_api_session = (req: SessionRequest, res: express.Response, next: (...args: any[]) => void) => {
+	if (req.session.user || req.body.auth === process.env.LOG_TOKEN) {
+		next();
+	} else {
+		res.setHeader("Content-type", "text/json");
+		res.send({ err: "Invalid token" });
+		res.status(403);
+		res.end();
+	}
+};
+
 const cl_unsignedin = (req: SessionRequest, res: express.Response, next: (...args: any[]) => void) => {
 	if (req.session?.user) {
 		// redirect to main page
@@ -134,6 +142,7 @@ app.post(
 app.post(
 	"/api/proj/output",
 	json_parser,
+	force_api_session,
 	closure((req, res) => {
 		console.log("POST API output");
 
@@ -143,10 +152,6 @@ app.post(
 			res.send(msg);
 			res.end();
 		};
-
-		if (req.body.auth !== process.env.LOG_TOKEN) {
-			return finish(401, { err: "Invalid token" });
-		}
 
 		// if an issue with matching content exists, an event with its' errid is created
 		// if no issue exists, a new one will be created
@@ -186,6 +191,7 @@ app.post(
 app.post(
 	"/api/proj/issues/get",
 	json_parser,
+	force_api_session,
 	closure((req, res) => {
 		console.log("POST API issues/get");
 
@@ -198,10 +204,6 @@ app.post(
 
 			res.end();
 		};
-
-		if (req.body.auth !== process.env.LOG_TOKEN) {
-			return finish(401, { err: "Invalid token" });
-		}
 
 		type bodyElement = { [index: string]: any };
 		let reply: bodyElement[] = [];
@@ -232,8 +234,42 @@ app.post(
 );
 
 app.post(
+	"/api/proj/events/get/:id",
+	json_parser,
+	force_api_session,
+	closure((req, res) => {
+		console.log(`POST API /api/proj/events/get/${req.params.id}`);
+
+		const finish = (code: number, msg: any) => {
+			if (res.writableEnded) return;
+
+			res.setHeader("Content-type", "text/json");
+			res.status(code);
+			res.send(msg);
+			res.end();
+		};
+
+		type bodyElement = { [index: string]: any };
+		let reply: bodyElement[] = [];
+		mysql_connection.query(`SELECT * FROM events WHERE issueid = ${req.params.id};`, async (err, result) => {
+			if (err) return finish(500, { code: err.code, err: err.message });
+
+			for (let row in result) {
+				let body: bodyElement = { events: {} };
+				for (let col in result[row]) body[col] = result[row][col];
+
+				reply.push(body);
+			}
+
+			finish(200, reply);
+		});
+	})
+);
+
+app.post(
 	"/api/proj/issues/delete",
 	json_parser,
+	force_api_session,
 	closure((req, res) => {
 		console.log("POST API issues/delete");
 
@@ -246,10 +282,6 @@ app.post(
 
 			res.end();
 		};
-
-		if (req.body.auth !== process.env.LOG_TOKEN) {
-			return finish(401, { err: "Invalid token" });
-		}
 
 		mysql_connection.query(`delete from events where issueid = ${req.body.issueid};`, async (err, result) => {
 			if (err) return finish(500, { code: err.code, err: err.message });
@@ -278,10 +310,32 @@ app.get(
 );
 
 app.get(
-	"/list",
+	"/list/issue/:id/",
 	cl_signin,
 	closure((req, res) => {
-		console.log("GET /list");
+		console.log(`GET /list/${req.params.id}`);
+
+		let full_url = req.protocol + "://" + req.get("host") + req.baseUrl;
+		res.render("list", { weblink: full_url });
+	})
+);
+
+app.get(
+	"/list/event/",
+	cl_signin,
+	closure((req, res) => {
+		console.log(`GET /list/event`);
+
+		let full_url = req.protocol + "://" + req.get("host") + req.baseUrl;
+		res.render("list", { weblink: full_url });
+	})
+);
+
+app.get(
+	"/list/",
+	cl_signin,
+	closure((req, res) => {
+		console.log(`GET /list/`);
 
 		let full_url = req.protocol + "://" + req.get("host") + req.baseUrl;
 		res.render("list", { weblink: full_url });
@@ -298,7 +352,7 @@ app.get(
 	})
 );
 
-app.use(function (req, res) {
+app.use((req, res) => {
 	res.send(404);
 });
 
@@ -309,9 +363,8 @@ app.listen(PORT, () => {
 	console.log(`running from ${__dirname}`);
 	console.log(`if local, available under http://localhost:${PORT}`);
 
-	mysql_connection.query(`SELECT * FROM accounts WHERE username = "${process.env.ADMIN_USERNAME}"`, (err, result) => {
+	mysql_connection.query(`SELECT * FROM accounts WHERE username = "${process.env.ADMIN_USER}"`, (err, result) => {
 		if (err) throw err;
-
 		if (!result[0]) {
 			if (!process.env.ADMIN_USER) throw "no process.env.ADMIN_USER";
 			if (!process.env.ADMIN_PASS) throw "no process.env.ADMIN_PASS";
