@@ -1,6 +1,3 @@
-// todo: .ENV file with a client secret
-// todo: post to github
-
 // https://expressjs.com/en/resources/middleware/session.html#compatible-session-stores
 // https://stackoverflow.com/questions/52580754/nodejs-how-to-securely-store-ip-username-and-password-of-a-database#52586124
 
@@ -25,14 +22,13 @@ import express from "express";
 import bodyParser from "body-parser";
 import session, { Session } from "express-session";
 
-dotenv.config();
+const parsed = dotenv.config();
 const app = express();
-
 const mysql_connection = mysql.createConnection({
 	host: process.env.DB_HOST,
 	user: process.env.DB_USER,
 	password: process.env.DB_PASS,
-	database: "turret",
+	database: process.env.DB_NAME,
 });
 
 app.use(
@@ -40,7 +36,6 @@ app.use(
 		secret: process.env.SECRET,
 	})
 );
-
 // render engine
 app.engine("spy", sprightly);
 app.set("views", "views");
@@ -154,6 +149,7 @@ const PORT = 8000;
 app.listen(PORT, () => {
 	console.log(`running from ${__dirname}`);
 	console.log(`available under http://localhost:${PORT}`);
+	console.log(`.env state error: ${parsed.error}`);
 
 	const SALT = bcrypt.genSaltSync(10);
 	const ADMIN_USERNAME = "blackshibe";

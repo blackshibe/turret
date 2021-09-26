@@ -25,7 +25,7 @@ Desired result:
 +----------+-------------+------+-----+---------+----------------+
 ```
 
-then, add an .ENV file:
+then, add an .env file:
 
 ```
 DB_HOST=your host
