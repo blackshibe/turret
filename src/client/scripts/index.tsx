@@ -48,11 +48,12 @@ window.addEventListener("load", () => {
 		// });
 	};
 
-	const issue = (props: { issueid: number; content: string; events: any[]; time: string }) => {
+	const issue = (props: { issueid: string; content: string; events: any[]; time: string }) => {
 		let server_error = true;
 		let unique_accounts = 0;
 		let unique_account_list: string[] = [];
 		let occured = 0;
+		let chart: Chart | undefined;
 
 		for (const index in props.events) {
 			const element = props.events[index];
@@ -83,6 +84,63 @@ window.addEventListener("load", () => {
 			}
 		};
 
+		let first = true;
+		const toggle_chart = () => {
+			// dont ask me
+			if (first) {
+				first = false;
+				toggle_chart();
+				toggle_chart();
+			}
+
+			if (chart) {
+				document.getElementById("halfbreak:" + props.issueid)?.setAttribute("style", "height: 0px !important");
+
+				chart.destroy();
+				chart = undefined;
+			} else {
+				document.getElementById("halfbreak:" + props.issueid)?.setAttribute("style", "height: 10px !important");
+
+				// Chart.options is pretty retarded
+				let properties: { type: string; data: { labels: string[]; datasets: any } } = {
+					type: "line",
+					data: {
+						labels: [],
+						datasets: [
+							{
+								label: "Events per day",
+								data: [],
+								backgroundColor: ["rgba(255, 99, 132, 0.2)"],
+								borderColor: ["rgba(255, 99, 132, 1)"],
+								borderWidth: 1,
+							},
+						],
+					},
+				};
+
+				let show_last_days = 60 * 60 * 24 * 7 * 1000;
+				for (const index in props.events) {
+					const element = props.events[index];
+					const date = new Date(element.time);
+
+					// date is too old to be counted
+					if (new Date().valueOf() - date.valueOf() - show_last_days > 0) continue;
+
+					const formatted_date = `${date.getDate()}/${date.getMonth()}`;
+					const date_index = properties.data.labels.indexOf(formatted_date);
+
+					if (date_index !== -1) {
+						properties.data.datasets[0].data[date_index] += 1;
+					} else {
+						const new_size = properties.data.labels.push(formatted_date);
+						properties.data.datasets[0].data[new_size - 1] = 1;
+					}
+				}
+
+				chart = new Chart("canvas:" + props.issueid, properties);
+			}
+		};
+
 		const delete_issue = () => {
 			fetch("../api/proj/issues/delete", {
 				method: "POST",
@@ -106,32 +164,29 @@ window.addEventListener("load", () => {
 				</legend>
 
 				<div className="info-code">{...render_content()}</div>
-				<div className="halfbreak"></div>
-
-				{/* <div class="info-code">
-					<code>
-						Graph view n shit
-						<br />
-						<br />
-						<br />
-						<br />
-					</code>
-				</div> */}
-
-				<div className="halfbreak"></div>
+				<div className="halfbreak" id={"halfbreak:" + props.issueid}></div>
+				<div className="info-canvas-holder">
+					<canvas className="info-canvas" id={"canvas:" + props.issueid}></canvas>
+				</div>
+				<div className="halfbreak" style={{ height: "0px !important" }}></div>
 
 				<nav className="info-actions">
 					<button onClick={delete_issue}>delete</button>
 					<div className="space" />
 					<button>get eventlist</button>
 					<div className="space" />
-					<button>toggle graph</button>
+					<button onClick={toggle_chart}>toggle graph</button>
 				</nav>
 			</fieldset>
 		);
 	};
 
-	ReactDOM.render(<div className="info-container loading-bar">loading...</div>, output);
+	ReactDOM.render(
+		<div key="loading-bar" className="info-container loading-bar">
+			loading...
+		</div>,
+		output
+	);
 
 	const reload_view = () => {
 		fetch("../api/proj/issues/get", {

@@ -96,6 +96,7 @@ a {
 }
 
 .halfbreak {
+	transition: linear 0.2s;
 	height: 10px;
 }
 

@@ -25,6 +25,18 @@ header {
 	grid-column: 1/4;
 }
 
+.info-canvas {
+	height: 0px;
+	transition: all 0.2s cubic-bezier(0.46, 0.03, 0.52, 0.96) 0s;
+}
+
+.info-canvas-holder {
+	border-radius: 3px;
+	background-color: var(--button-bg);
+	max-width: calc(100vw - 50px);
+	display: grid;
+}
+
 .info-header {
 	padding-left: 10px;
 	padding-right: 10px;
