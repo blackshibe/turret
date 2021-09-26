@@ -10,9 +10,19 @@ header {
 	border-style: solid;
 }
 
+.space {
+	width: 10px;
+	height: 1px;
+	display: inline-block;
+}
+
 .page-content {
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(min(600px, 100%), 1fr));
+}
+
+.loading-bar {
+	grid-column: 1/4;
 }
 
 .info-header {

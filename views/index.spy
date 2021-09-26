@@ -4,6 +4,7 @@
 		<meta charset="UTF-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
 		<link href="sheet/index.css" rel="stylesheet" type="text/css" />
 		<link href="sheet/combined.css" rel="stylesheet" type="text/css" />
 
@@ -11,52 +12,17 @@
 	</head>
 	<body>
 		<div class="page-bg"></div>
+		<script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+		<script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
 		<script src="/scripts/index.js"></script>
 
 		<header>
 			<h1>Welcome, {{ username }}</h1>
 			running {{ version }}
 			<button id="logout">logout</button>
+			<button id="test">test</button>
 		</header>
 
-		<nav class="page-content">
-			<fieldset class="info-container">
-				<legend class="info-header">
-					<span class="error-id hbold">#2139</span> - <span class="info hbold">64</span> times on
-					<span class="info hbold">4</span> accounts
-				</legend>
-
-				<div class="info-code">
-					<code>
-						<span>Ass is not a valid member of Folder 'Workspace.MosinNagant.attachments"</span><br />
-						<span class="info">Stack Begin </span><br />
-						<span class="info"
-							>Script 'Workspace.MosinNagant.attachments.pu_3.5x_scope.runtimeProperties', Line 18</span
-						><br />
-						<span class="info">Stack End</span><br />
-					</code>
-				</div>
-
-				<div class="halfbreak"></div>
-
-				<div class="info-code">
-					<code>
-						Graph view n shit
-						<br />
-						<br />
-						<br />
-						<br />
-					</code>
-				</div>
-
-				<div class="halfbreak"></div>
-
-				<nav class="info-actions">
-					<button>delete</button>
-					<button>get eventlist</button>
-					<button>toggle graph</button>
-				</nav>
-			</fieldset>
-		</nav>
+		<nav class="page-content" id="page_content"></nav>
 	</body>
 </html>

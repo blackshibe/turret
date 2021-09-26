@@ -22,22 +22,14 @@
 				<fieldset>
 					<legend>Login</legend>
 					<div id="login_form" class="login-form">
-						<form>
-							<input
-								type="text"
-								maxlength="40"
-								placeholder="userid"
-								id="username_field"
-								name="username"
-							/>
-							<input
-								type="password"
-								maxlength="40"
-								placeholder="password"
-								id="password_field"
-								name="password"
-							/>
-						</form>
+						<input type="text" maxlength="40" placeholder="userid" id="username_field" name="username" />
+						<input
+							type="password"
+							maxlength="40"
+							placeholder="password"
+							id="password_field"
+							name="password"
+						/>
 
 						<!-- class = red tip -->
 						<span class="tip" id="login_tip"></span>

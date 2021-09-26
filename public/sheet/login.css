@@ -13,6 +13,14 @@ main {
 	margin: 12px;
 }
 
+input {
+	width: min-content;
+}
+
+h1 {
+	word-wrap: break-word;
+}
+
 .shitty-center {
 	position: fixed;
 	display: grid;

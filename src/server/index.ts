@@ -126,11 +126,137 @@ app.post(
 
 // project api
 
+// named output because it's not guaranteed to create an issue and event does not fit
 app.post(
-	"/api/proj/issue",
+	"/api/proj/output",
 	json_parser,
 	closure((req, res) => {
-		console.log("POST API issue");
+		console.log("POST API output");
+
+		const finish = (code: number, msg: { [index: string]: string }) => {
+			res.setHeader("Content-type", "text/json");
+			res.status(code);
+			res.send(msg);
+			res.end();
+		};
+
+		if (req.body.auth !== process.env.LOG_TOKEN) {
+			return finish(401, { err: "Invalid token" });
+		}
+
+		// if an issue with matching content exists, an event with its' errid is created
+		// if no issue exists, a new one will be created
+		mysql_connection.query(`SELECT * FROM issues WHERE content = '${req.body.content}';`, (err, result) => {
+			if (err) return finish(500, { code: err.code, err: err.message });
+			if (result[0]) {
+				const issue = JSON.parse(JSON.stringify(result[0]));
+				mysql_connection.query(
+					`insert into events (issueid, userid) values (${issue.issueid}, '${req.body.content}')`,
+					(err, result) => {
+						if (err) return finish(500, { code: err.code, err: err.message });
+						console.log(2);
+
+						res.json({ ok: true, id: issue.issueid, new: false });
+						res.end();
+					}
+				);
+			} else {
+				// obvious chance for code injection lmao
+				mysql_connection.query(`insert into issues (content) values ('${req.body.content}')`, (err, issue) => {
+					if (err) return finish(500, { code: err.code, err: err.message });
+					mysql_connection.query(
+						`insert into events (userid, issueid) values ('${req.body.userid}', (select issueid from issues where content = '${req.body.content}'));`,
+						(err, result) => {
+							if (err) return finish(500, { code: err.code, err: err.message });
+
+							res.json({ ok: true, new: true });
+							res.end();
+						}
+					);
+				});
+			}
+		});
+	})
+);
+
+app.post(
+	"/api/proj/issues/get",
+	json_parser,
+	closure((req, res) => {
+		console.log("POST API issues/get");
+
+		const finish = (code: number, msg: any) => {
+			if (res.writableEnded) return;
+
+			res.setHeader("Content-type", "text/json");
+			res.status(code);
+			res.send(msg);
+
+			res.end();
+		};
+
+		if (req.body.auth !== process.env.LOG_TOKEN) {
+			return finish(401, { err: "Invalid token" });
+		}
+
+		let reply = [];
+		mysql_connection.query(`SELECT * FROM issues;`, async (err, result) => {
+			if (err) return finish(500, { code: err.code, err: err.message });
+
+			for (let row in result) {
+				console.log("processing", row);
+				let body = { events: {} };
+				for (let col in result[row]) body[col] = result[row][col];
+
+				reply.push(body);
+			}
+
+			mysql_connection.query(`SELECT * FROM events;`, (err, result) => {
+				if (err) return finish(500, { code: err.code, err: err.message });
+				for (let row in result) {
+					console.log(reply, row);
+					let body = {};
+
+					for (let col in result[row]) body[col] = result[row][col];
+					reply.forEach((element) => {
+						if (element.issueid === result[row].issueid) element.events[row] = body;
+					});
+				}
+				finish(200, reply);
+			});
+		});
+	})
+);
+
+app.post(
+	"/api/proj/issues/delete",
+	json_parser,
+	closure((req, res) => {
+		console.log("POST API issues/delete");
+
+		const finish = (code: number, msg: any) => {
+			if (res.writableEnded) return;
+
+			res.setHeader("Content-type", "text/json");
+			res.status(code);
+			res.send(msg);
+
+			res.end();
+		};
+
+		if (req.body.auth !== process.env.LOG_TOKEN) {
+			return finish(401, { err: "Invalid token" });
+		}
+
+		mysql_connection.query(`delete from events where issueid = ${req.body.issueid};`, async (err, result) => {
+			if (err) return finish(500, { code: err.code, err: err.message });
+
+			mysql_connection.query(`delete from issues where issueid = ${req.body.issueid};`, async (err, result) => {
+				if (err) return finish(500, { code: err.code, err: err.message });
+			});
+
+			finish(200, { ok: true });
+		});
 	})
 );
 
@@ -182,6 +308,7 @@ app.listen(PORT, () => {
 
 	mysql_connection.query(`SELECT * FROM accounts WHERE username = "${ADMIN_USERNAME}"`, (err, result) => {
 		if (err) throw err;
+
 		if (!result[0]) {
 			mysql_connection.query(
 				`INSERT INTO accounts(username, password) VALUES("${ADMIN_USERNAME}", "${ADMIN_PASSWORD}")`,

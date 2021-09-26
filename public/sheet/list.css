@@ -7,6 +7,10 @@ footer {
 	width: unset !important;
 }
 
+h1 {
+	word-wrap: break-word;
+}
+
 .page-content {
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(min(600px, 100%), 1fr));
