@@ -9,7 +9,7 @@ type SessionRequest = express.Request & {
 };
 
 type user = {
-	userid: number;
+	user: number;
 	username: string;
 };
 
@@ -120,7 +120,7 @@ app.post(
 			let correct = bcrypt.compareSync(password, account.password);
 			if (!correct) return finish("incorrect password");
 
-			req.session.user = { userid: account.userid, username: account.username };
+			req.session.user = { user: account.user, username: account.username };
 			res.status(200);
 			res.end();
 		});
@@ -161,7 +161,7 @@ app.post(
 			if (result[0]) {
 				const issue = JSON.parse(JSON.stringify(result[0]));
 				mysql_connection.query(
-					`insert into events (issueid, userid) values (${issue.issueid}, '${req.body.content}')`,
+					`insert into events (issueid, user) values (${issue.issueid}, '${req.body.content}')`,
 					(err, result) => {
 						if (err) return finish(500, { code: err.code, err: err.message });
 						console.log(2);
@@ -175,7 +175,7 @@ app.post(
 				mysql_connection.query(`insert into issues (content) values ('${req.body.content}')`, (err, issue) => {
 					if (err) return finish(500, { code: err.code, err: err.message });
 					mysql_connection.query(
-						`insert into events (userid, issueid) values ('${req.body.userid}', (select issueid from issues where content = '${req.body.content}'));`,
+						`insert into events (user, issueid) values ('${req.body.user}', (select issueid from issues where content = '${req.body.content}'));`,
 						(err, result) => {
 							if (err) return finish(500, { code: err.code, err: err.message });
 
@@ -367,14 +367,14 @@ app.listen(PORT, async () => {
 	const pr = (content: string, user: string) =>
 		new Promise<void>((res, rej) => {
 			mysql_connection.query(`SELECT * FROM issues WHERE content = "${content}";`, (err, result) => {
-				if (err) throw err;
+				if (err) return rej(err);
 
 				if (result[0]) {
 					const issue = JSON.parse(JSON.stringify(result[0]));
 					mysql_connection.query(
 						`insert into events (issueid, user) values (${issue.issueid}, "${content}")`,
 						(err, result) => {
-							if (err) throw err;
+							if (err) return rej(err);
 
 							res();
 						}
@@ -382,12 +382,13 @@ app.listen(PORT, async () => {
 				} else {
 					// obvious chance for code injection lmao
 					mysql_connection.query(`insert into issues (content) values ("${content}")`, (err, issue) => {
-						if (err) throw err;
+						if (err) return rej(err);
 
 						mysql_connection.query(
 							`insert into events (user, issueid) values ('${user}', (select issueid from issues where content = "${content}"));`,
 							(err, result) => {
-								if (err) throw err;
+								if (err) return rej(err);
+
 								res();
 							}
 						);

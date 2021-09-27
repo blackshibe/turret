@@ -16,11 +16,11 @@ window.addEventListener("load", () => {
 		navigator.clipboard.writeText(userlist);
 	};
 
-	const event = (props: { time: string; issueid: string; eventid: string; userid: string }) => {
+	const event = (props: { time: string; issueid: string; eventid: string; user: string }) => {
 		let time = new Date(props.time);
 		let formatted_time = `${time.toLocaleTimeString()} ${time.toDateString()}`;
 
-		if (!userlist.includes(props.userid)) userlist += props.userid + "\n";
+		if (!userlist.includes(props.user)) userlist += props.user + "\n";
 
 		return (
 			<nav className="page-content-wide">
@@ -28,7 +28,7 @@ window.addEventListener("load", () => {
 					<legend className="info-header">
 						<span className="event-id hbold">${props.eventid}</span> -
 						<span className="info hbold">{formatted_time}</span> caused by{" "}
-						<span className="info hbold"> {props.userid ? props.userid : "server"}</span>
+						<span className="info hbold"> {props.user ? props.user : "server"}</span>
 					</legend>
 				</fieldset>
 			</nav>
@@ -44,10 +44,10 @@ window.addEventListener("load", () => {
 
 		for (const index in props.events) {
 			const element = props.events[index];
-			if (!unique_account_list.includes(element.userid)) {
-				if (element.userid !== 0) server_error = false;
+			if (!unique_account_list.includes(element.user)) {
+				if (element.user !== 0) server_error = false;
 				unique_accounts += 1;
-				unique_account_list.push(element.userid);
+				unique_account_list.push(element.user);
 			}
 		}
 

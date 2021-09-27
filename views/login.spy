@@ -22,7 +22,7 @@
 				<fieldset>
 					<legend>Login</legend>
 					<div id="login_form" class="login-form">
-						<input type="text" maxlength="40" placeholder="userid" id="username_field" name="username" />
+						<input type="text" maxlength="40" placeholder="user" id="username_field" name="username" />
 						<input
 							type="password"
 							maxlength="40"

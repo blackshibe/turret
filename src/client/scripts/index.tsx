@@ -33,10 +33,10 @@ window.addEventListener("load", () => {
 			const element = props.events[index];
 
 			occured += 1;
-			if (!unique_account_list.includes(element.userid)) {
-				if (element.userid !== 0) server_error = false;
+			if (!unique_account_list.includes(element.user)) {
+				if (element.user !== 0) server_error = false;
 				unique_accounts += 1;
-				unique_account_list.push(element.userid);
+				unique_account_list.push(element.user);
 			}
 		}
 

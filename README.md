@@ -11,10 +11,10 @@ create database turret;
 use turret;
 
 create table accounts(
-    userid INT NOT NULL AUTO_INCREMENT,
+    user INT NOT NULL AUTO_INCREMENT,
     username VARCHAR(60) NOT NULL,
     password VARCHAR(60) NOT NULL,
-    PRIMARY KEY ( userid )
+    PRIMARY KEY ( user )
 );
 
 create table issues(
@@ -28,7 +28,7 @@ create table issues(
 create table events(
     eventid INT NOT NULL AUTO_INCREMENT,
     issueid INT NOT NULL,
-    userid INT NOT NULL,
+    user INT NOT NULL,
     time TIMESTAMP NOT NULL,
 
     PRIMARY KEY (eventid),
@@ -44,7 +44,7 @@ accounts
 +----------+-------------+------+-----+---------+----------------+
 | Field    | Type        | Null | Key | Default | Extra          |
 +----------+-------------+------+-----+---------+----------------+
-| userid   | int(11)     | NO   | PRI | NULL    | auto_increment |
+| user   | int(11)     | NO   | PRI | NULL    | auto_increment |
 | username | varchar(60) | NO   |     | NULL    |                |
 | password | varchar(60) | NO   |     | NULL    |                |
 +----------+-------------+------+-----+---------+----------------+
@@ -63,7 +63,7 @@ events
 | eventid | int(11)   | NO   | PRI | NULL              | auto_increment              |
 | issueid | int(11)   | NO   | MUL | NULL              |                             |
 | time    | timestamp | NO   |     | CURRENT_TIMESTAMP | on update CURRENT_TIMESTAMP |
-| userid  | int(11)   | NO   |     | NULL              |                             |
+| user  | int(11)   | NO   |     | NULL              |                             |
 +---------+-----------+------+-----+-------------------+-----------------------------+
 
 ```
