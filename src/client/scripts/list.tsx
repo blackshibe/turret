@@ -1,6 +1,8 @@
 window.addEventListener("load", () => {
 	let output = document.getElementById("page_content");
 	let path = window.location.href.split("/").reverse();
+	let userlist = "";
+
 	if (path[0] === "") path.shift();
 
 	ReactDOM.render(
@@ -9,8 +11,6 @@ window.addEventListener("load", () => {
 		</div>,
 		output
 	);
-
-	let userlist = "";
 
 	const copy = () => {
 		navigator.clipboard.writeText(userlist);

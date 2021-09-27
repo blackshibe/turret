@@ -15,6 +15,7 @@ type user = {
 
 const sprightly = require("sprightly");
 const package_file = require("../../package.json");
+const dump = require("../../dump.json");
 
 import mysql from "mysql";
 import bcrypt from "bcrypt";
@@ -359,9 +360,50 @@ app.use((req, res) => {
 // entry
 
 const PORT = 8000;
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
 	console.log(`running from ${__dirname}`);
 	console.log(`if local, available under http://localhost:${PORT}`);
+
+	const pr = (content: string, user: string) =>
+		new Promise<void>((res, rej) => {
+			mysql_connection.query(`SELECT * FROM issues WHERE content = "${content}";`, (err, result) => {
+				if (err) throw err;
+
+				if (result[0]) {
+					const issue = JSON.parse(JSON.stringify(result[0]));
+					mysql_connection.query(
+						`insert into events (issueid, user) values (${issue.issueid}, "${content}")`,
+						(err, result) => {
+							if (err) throw err;
+
+							res();
+						}
+					);
+				} else {
+					// obvious chance for code injection lmao
+					mysql_connection.query(`insert into issues (content) values ("${content}")`, (err, issue) => {
+						if (err) throw err;
+
+						mysql_connection.query(
+							`insert into events (user, issueid) values ('${user}', (select issueid from issues where content = "${content}"));`,
+							(err, result) => {
+								if (err) throw err;
+								res();
+							}
+						);
+					});
+				}
+			});
+		});
+
+	for (const index in dump) {
+		const element = dump[index];
+
+		console.log("upload for", element.title);
+		if (element.title) {
+			await pr(element.desc, element.title);
+		}
+	}
 
 	mysql_connection.query(`SELECT * FROM accounts WHERE username = "${process.env.ADMIN_USER}"`, (err, result) => {
 		if (err) throw err;
