@@ -39,30 +39,26 @@ create table events(
 
 Desired result:
 
-| Item         | Price     | # In stock |
-|--------------|-----------|------------|
-| Juicy Apples | 1.99      | *7*        |
-| Bananas      | **1.89**  | 5234       |
-
 accounts
 | Field    | Type        | Null | Key | Default | Extra          |
-------------------------------------------------------------------
-| user   | int(11)     | NO   | PRI | NULL    | auto_increment |
+|----------|-------------|------|-----|---------|----------------|
+| user     | int(11)     | NO   | PRI | NULL    | auto_increment |
 | username | varchar(60) | NO   |     | NULL    |                |
 | password | varchar(60) | NO   |     | NULL    |                |
 issues
 | Field   | Type         | Null | Key | Default           | Extra                       |
-----------|--------------|------|-----|--------------------|----------------------------|-----
+|----------|--------------|------|-----|-------------------|----------------------------|
 | issueid | int(11)      | NO   | PRI | NULL              | auto_increment              |
 | time    | timestamp    | NO   |     | CURRENT_TIMESTAMP | on update CURRENT_TIMESTAMP |
 | content | varchar(256) | NO   |     | NULL              |                             |
+
 events
 | Field   | Type      | Null | Key | Default           | Extra                       |
---------------------------------------------------------------------------------------
+|---------|-----------|------|-----|-------------------|-----------------------------|
 | eventid | int(11)   | NO   | PRI | NULL              | auto_increment              |
 | issueid | int(11)   | NO   | MUL | NULL              |                             |
 | time    | timestamp | NO   |     | CURRENT_TIMESTAMP | on update CURRENT_TIMESTAMP |
-| user  | int(11)   | NO   |     | NULL              |                             |
+| user    | int(11)   | NO   |     | NULL              |                             |
 
 then, add an .env file:
 
