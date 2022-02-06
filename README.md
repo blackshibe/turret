@@ -39,20 +39,21 @@ create table events(
 
 Desired result:
 
-accounts
+Accounts:
 | Field    | Type        | Null | Key | Default | Extra          |
 |----------|-------------|------|-----|---------|----------------|
 | user     | int(11)     | NO   | PRI | NULL    | auto_increment |
 | username | varchar(60) | NO   |     | NULL    |                |
 | password | varchar(60) | NO   |     | NULL    |                |
-issues
+
+Issues:
 | Field   | Type         | Null | Key | Default           | Extra                       |
 |----------|--------------|------|-----|-------------------|----------------------------|
 | issueid | int(11)      | NO   | PRI | NULL              | auto_increment              |
 | time    | timestamp    | NO   |     | CURRENT_TIMESTAMP | on update CURRENT_TIMESTAMP |
 | content | varchar(256) | NO   |     | NULL              |                             |
 
-events
+Events:
 | Field   | Type      | Null | Key | Default           | Extra                       |
 |---------|-----------|------|-----|-------------------|-----------------------------|
 | eventid | int(11)   | NO   | PRI | NULL              | auto_increment              |
