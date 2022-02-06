@@ -39,7 +39,6 @@ create table events(
 
 Desired result:
 
-```
 | Item         | Price     | # In stock |
 |--------------|-----------|------------|
 | Juicy Apples | 1.99      | *7*        |
@@ -64,8 +63,6 @@ events
 | issueid | int(11)   | NO   | MUL | NULL              |                             |
 | time    | timestamp | NO   |     | CURRENT_TIMESTAMP | on update CURRENT_TIMESTAMP |
 | user  | int(11)   | NO   |     | NULL              |                             |
-
-```
 
 then, add an .env file:
 
